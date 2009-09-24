@@ -31,7 +31,7 @@
  * 
  * Requires:
  * 		- Prototype v. 1.5.0_rc0 > (as packaged with Scriptaculous 1.6.1)
- * 		- Scriptaculous v. 1.6.1 > modules: builder, dragdrop 
+ * 		- Scriptaculous v. 1.6.1 > modules: dragdrop 
  * 		
  * Known issues:
  * 		- Safari animated gifs, only one of each will animate, this seems to be a known Safari issue
@@ -151,7 +151,7 @@ Object.extend( Object.extend( CropDraggable.prototype, Draggable.prototype), {
 	 * Defers the drawing of the draggable to the supplied method
 	 */
 	draw: function(point) {
-		var pos = Position.cumulativeOffset(this.element);
+		var pos = Element.cumulativeOffset(this.element);
 		var d = this.currentDelta();
 		pos[0] -= d[0]; 
 		pos[1] -= d[1];
@@ -445,32 +445,34 @@ Cropper.Img.prototype = {
 		// apply an extra class to the wrapper to fix Opera below version 9
 		var fixOperaClass = '';
 		if( this.isOpera8 ) fixOperaClass = ' opera8';
-		this.imgWrap = Builder.node( 'div', { 'class': cNamePrefix + 'wrap' + fixOperaClass } );
+		this.imgWrap = new Element( 'div', { 'class': cNamePrefix + 'wrap' + fixOperaClass } );
 		
-		this.north		= Builder.node( 'div', { 'class': cNamePrefix + 'overlay ' + cNamePrefix + 'north' }, [Builder.node( 'span' )] );
-		this.east		= Builder.node( 'div', { 'class': cNamePrefix + 'overlay ' + cNamePrefix + 'east' } , [Builder.node( 'span' )] );
-		this.south		= Builder.node( 'div', { 'class': cNamePrefix + 'overlay ' + cNamePrefix + 'south' }, [Builder.node( 'span' )] );
-		this.west		= Builder.node( 'div', { 'class': cNamePrefix + 'overlay ' + cNamePrefix + 'west' } , [Builder.node( 'span' )] );
+		this.north		= new Element( 'div', { 'class': cNamePrefix + 'overlay ' + cNamePrefix + 'north' }).insert(new Element( 'span' ));
+		this.east		= new Element( 'div', { 'class': cNamePrefix + 'overlay ' + cNamePrefix + 'east' }).insert(new Element( 'span' ));
+		this.south		= new Element( 'div', { 'class': cNamePrefix + 'overlay ' + cNamePrefix + 'south' }).insert(new Element( 'span' ));
+		this.west		= new Element( 'div', { 'class': cNamePrefix + 'overlay ' + cNamePrefix + 'west' }).insert(new Element( 'span' ));
 		
 		var overlays	= [ this.north, this.east, this.south, this.west ];
 
-		this.dragArea	= Builder.node( 'div', { 'class': cNamePrefix + 'dragArea' }, overlays );
+		this.dragArea	= new Element( 'div', { 'class': cNamePrefix + 'dragArea' } );
+		
+		overlays.each(function(o){this.dragArea.insert(o);}, this);
 						
-		this.handleN	= Builder.node( 'div', { 'class': cNamePrefix + 'handle ' + cNamePrefix + 'handleN' } );
-		this.handleNE	= Builder.node( 'div', { 'class': cNamePrefix + 'handle ' + cNamePrefix + 'handleNE' } );
-		this.handleE	= Builder.node( 'div', { 'class': cNamePrefix + 'handle ' + cNamePrefix + 'handleE' } );
-		this.handleSE	= Builder.node( 'div', { 'class': cNamePrefix + 'handle ' + cNamePrefix + 'handleSE' } );
-		this.handleS	= Builder.node( 'div', { 'class': cNamePrefix + 'handle ' + cNamePrefix + 'handleS' } );
-		this.handleSW	= Builder.node( 'div', { 'class': cNamePrefix + 'handle ' + cNamePrefix + 'handleSW' } );
-		this.handleW	= Builder.node( 'div', { 'class': cNamePrefix + 'handle ' + cNamePrefix + 'handleW' } );
-		this.handleNW	= Builder.node( 'div', { 'class': cNamePrefix + 'handle ' + cNamePrefix + 'handleNW' } );
+		this.handleN	= new Element( 'div', { 'class': cNamePrefix + 'handle ' + cNamePrefix + 'handleN' } );
+		this.handleNE	= new Element( 'div', { 'class': cNamePrefix + 'handle ' + cNamePrefix + 'handleNE' } );
+		this.handleE	= new Element( 'div', { 'class': cNamePrefix + 'handle ' + cNamePrefix + 'handleE' } );
+		this.handleSE	= new Element( 'div', { 'class': cNamePrefix + 'handle ' + cNamePrefix + 'handleSE' } );
+		this.handleS	= new Element( 'div', { 'class': cNamePrefix + 'handle ' + cNamePrefix + 'handleS' } );
+		this.handleSW	= new Element( 'div', { 'class': cNamePrefix + 'handle ' + cNamePrefix + 'handleSW' } );
+		this.handleW	= new Element( 'div', { 'class': cNamePrefix + 'handle ' + cNamePrefix + 'handleW' } );
+		this.handleNW	= new Element( 'div', { 'class': cNamePrefix + 'handle ' + cNamePrefix + 'handleNW' } );
 				
-		this.selArea	= Builder.node( 'div', { 'class': cNamePrefix + 'selArea' },
+		this.selArea	= new Element( 'div', { 'class': cNamePrefix + 'selArea' });
 			[
-				Builder.node( 'div', { 'class': cNamePrefix + 'marqueeHoriz ' + cNamePrefix + 'marqueeNorth' }, [Builder.node( 'span' )] ),
-				Builder.node( 'div', { 'class': cNamePrefix + 'marqueeVert ' + cNamePrefix + 'marqueeEast' }  , [Builder.node( 'span' )] ),
-				Builder.node( 'div', { 'class': cNamePrefix + 'marqueeHoriz ' + cNamePrefix + 'marqueeSouth' }, [Builder.node( 'span' )] ),
-				Builder.node( 'div', { 'class': cNamePrefix + 'marqueeVert ' + cNamePrefix + 'marqueeWest' }  , [Builder.node( 'span' )] ),
+				new Element( 'div', { 'class': cNamePrefix + 'marqueeHoriz ' + cNamePrefix + 'marqueeNorth' }).insert(new Element( 'span' )),
+				new Element( 'div', { 'class': cNamePrefix + 'marqueeVert ' + cNamePrefix + 'marqueeEast' }).insert(new Element( 'span' )),
+				new Element( 'div', { 'class': cNamePrefix + 'marqueeHoriz ' + cNamePrefix + 'marqueeSouth' }).insert(new Element( 'span' )),
+				new Element( 'div', { 'class': cNamePrefix + 'marqueeVert ' + cNamePrefix + 'marqueeWest' }).insert(new Element( 'span' )),
 				this.handleN,
 				this.handleNE,
 				this.handleE,
@@ -479,14 +481,14 @@ Cropper.Img.prototype = {
 				this.handleSW,
 				this.handleW,
 				this.handleNW,
-				Builder.node( 'div', { 'class': cNamePrefix + 'clickArea' } )
-			]
-		);
+				new Element( 'div', { 'class': cNamePrefix + 'clickArea' } )
+			].each(function(o){this.selArea.insert(o);}, this);
+		
 				
 		this.imgWrap.appendChild( this.img );
 		this.imgWrap.appendChild( this.dragArea );
 		this.dragArea.appendChild( this.selArea );
-		this.dragArea.appendChild( Builder.node( 'div', { 'class': cNamePrefix + 'clickArea' } ) );
+		this.dragArea.appendChild( new Element( 'div', { 'class': cNamePrefix + 'clickArea' } ) );
 
 		insertPoint.appendChild( this.imgWrap );
 
@@ -1042,7 +1044,7 @@ Cropper.Img.prototype = {
 				/* we have to be a bit more forceful for Safari, otherwise the the marquee &
 				 * the south handles still don't move
 				 */ 
-				d = Builder.node( 'div', '' );
+				d = new Element( 'div', '' );
 				d.style.visibility = 'hidden';
 				
 				var classList = ['SE','S','SW'];
@@ -1100,7 +1102,7 @@ Cropper.Img.prototype = {
 	 */
 	getCurPos: function( e ) {
 		// get the offsets for the wrapper within the document
-		var el = this.imgWrap, wrapOffsets = Position.cumulativeOffset( el );
+		var el = this.imgWrap, wrapOffsets = Element.cumulativeOffset( el );
 		// remove any scrolling that is applied to the wrapper (this may be buggy) - don't count the scroll on the body as that won't affect us
 		while( el.nodeName != 'BODY' ) {
 			wrapOffsets[1] -= el.scrollTop  || 0;
