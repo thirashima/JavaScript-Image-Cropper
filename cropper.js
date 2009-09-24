@@ -119,9 +119,7 @@
  * Extend the Draggable class to allow us to pass the rendering
  * down to the Cropper object.
  */
-var CropDraggable = Class.create();
-
-Object.extend( Object.extend( CropDraggable.prototype, Draggable.prototype), {
+var CropDraggable = Class.create(Draggable, {
 	
 	initialize: function(element) {
 		this.options = Object.extend(
@@ -222,8 +220,7 @@ Object.extend( Object.extend( CropDraggable.prototype, Draggable.prototype), {
  * 
  */
 var Cropper = {};
-Cropper.Img = Class.create();
-Cropper.Img.prototype = {
+Cropper.Img = Class.create({
 	
 	/**
 	 * Initialises the class
@@ -1223,7 +1220,7 @@ Cropper.Img.prototype = {
 	 * @return void
 	 */
 	subDrawArea: function() {}
-};
+});
 
 
 
@@ -1240,9 +1237,7 @@ Cropper.Img.prototype = {
  * 		- previewWrap obj
  * 			HTML element that will be used as a container for the preview image		
  */
-Cropper.ImgWithPreview = Class.create();
-
-Object.extend( Object.extend( Cropper.ImgWithPreview.prototype, Cropper.Img.prototype ), {
+Cropper.ImgWithPreview = Class.create(Cropper.Img, {
 	
 	/**
 	 * Implements the abstract method from Cropper.Img to initialize preview image settings.
