@@ -1041,7 +1041,7 @@ Cropper.Img = Class.create({
 				/* we have to be a bit more forceful for Safari, otherwise the the marquee &
 				 * the south handles still don't move
 				 */ 
-				d = new Element( 'div', '' );
+				d = new Element( 'div' );
 				d.style.visibility = 'hidden';
 				
 				var classList = ['SE','S','SW'];
